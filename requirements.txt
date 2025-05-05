@@ -1,0 +1,27 @@
+# Project dependencies
+
+annotated-types==0.7.0 # type hinting support for Pydantic
+anyio==4.9.0 # high-performance async I/O library (required by FastAPI)
+certifi==2025.4.26 # SSL certificate validation for HTTP requests
+click==8.1.8 # CLI creation tool (used by Uvicorn)
+dnspython==2.7.0 # DNS resolution utilities (email validation)
+email_validator==2.2.0 # Email validation library used in schema validation
+fastapi==0.115.12 # Main web framework for building API
+greenlet==3.2.1 # SQLAlchemy core async component
+h11==0.16.0 # Low-level HTTP library used by HTTPX
+httpcore==1.0.9 # Core HTTP protocol client used by HTTPX
+httpx==0.28.1 # HTTP client for making async requests; testing or calling APIs
+idna==3.10 # IDNA encoding support for domain names
+iniconfig==2.1.0 # INI configuration file parser (pytest)
+packaging==25.0 # Dependency for version parsing and packaging tools
+pluggy==1.5.0 # Plugin mgmt (pytest)
+pydantic==2.11.4 # Data validation & settings mgmt library (FastAPI schemas)
+pydantic_core==2.33.2 # Internal core runtime used by Pydantic v2
+pytest==8.3.5 # Testing framework for writing tests
+python-dotenv==1.1.0 # Loads environment variables from a .env file
+sniffio==1.3.1 # Used by AnyIO for async context switching
+SQLAlchemy==2.0.40 # SQL toolkit and ORM used for db access
+starlette==0.46.2 # ASGI framework for FastAPI
+typing-inspection==0.4.0 # Utility for inspecting python type hints
+typing_extensions==4.13.2 # Extensions to Python's typing module
+uvicorn==0.34.2 # ASGI server used to run FastAPI apps
