@@ -5,7 +5,7 @@ Supplier model.
 """
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.db import Base
+from app.db.session import Base
 
 # Represents a purchase order placed with a supplier
 class PurchaseOrder(Base):

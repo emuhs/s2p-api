@@ -7,8 +7,8 @@ modules, and ensures database tables are created at startup.
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.db import Base, engine #SQLAlchemy base and DB engine
-from app import models		#Import models so SQLAlchemy can detect them
+from app.db.session import Base, engine 
+from app import models		
 from app.routes import supplier, purchase_order  #API route modules
 
 # Initialize FastAPI application w/ metadata

@@ -6,7 +6,7 @@ supplier, as well as establishes a one-to-many relationship with purchase orders
 
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from app.db import Base
+from app.db.session import Base
 
 # Supplier model represents a vendor or entity from which goods/services are purchased.
 class Supplier(Base):

@@ -8,10 +8,10 @@ The project is containerized using Docker and includes test coverage with pytest
 
 - Supplier and purchase order CRUD functionality
 - Input validation with Pydantic
-- SQLAlchemy ORM with SQLite (precursor db ahead of dev into PostgreSQL)
+- SQLAlchemy ORM with PostgreSQL (via Docker)
 - RESTful API with FastAPI
-- Auto-generated Swagger and ReDoc documentation
-- Dockerized for portability
+- Alembic for schema migrations
+- Dockerized for portability and local development
 - Unit tests with pytest
 
 ## Tech Stack
@@ -19,23 +19,43 @@ The project is containerized using Docker and includes test coverage with pytest
 - FastAPI
 - SQLAlchemy
 - Pydantic
-- SQLite (default)
-- Docker
-- Uvicorn
+- PostgreSQL (via Docker)
+- Alembic (for migrations)
+- Docker & Docker Compose
 - pytest
 
 ## Project Structure
 
 ```
-s2p_project
-├── Dockerfile.dev
+.
+├── Dockerfile
+├── LICENSE
 ├── README.md
+├── alembic
+│   ├── README
+│   ├── env.py
+│   ├── script.py.mako
+│   └── versions
+│       └── dd21dda05376_initial_schema.py
+├── alembic.ini
 ├── app
-│   ├── db.py
+│   ├── config.py
+│   ├── db
+│   │   ├── __init__.py
+│   │   └── session.py
 │   ├── main.py
 │   ├── models
+│   │   ├── __init__.py
+│   │   ├── purchase_order.py
+│   │   └── supplier.py
 │   ├── routes
+│   │   ├── __init__.py
+│   │   ├── purchase_order.py
+│   │   └── supplier.py
 │   └── schemas
+│       ├── purchase_order.py
+│       └── supplier.py
+├── docker-compose.yml
 ├── requirements.txt
 └── tests
     ├── __init__.py
@@ -43,67 +63,76 @@ s2p_project
     └── test_supplier.py
 ```
 
+## Endpoints
+
+### Supplier Routes
+- `GET /supplier`: List all suppliers  
+- `POST /supplier`: Create a new supplier  
+- `GET /supplier/{supplier_id}`: Retrieve a supplier by ID  
+- `PUT /supplier/{supplier_id}`: Update a supplier  
+- `DELETE /supplier/{supplier_id}`: Delete a supplier  
+- `GET /supplier/{supplier_id}/purchase_orders`: Get Purchase Orders For Supplier
+
+### Purchase Order Routes
+- `GET /purchase_order`: List all purchase orders  
+- `POST /purchase_order`: Create a new purchase order  
+- `GET /purchase_order/{id}`: Retrieve a purchase order by ID  
+- `PUT /purchase_order/{id}`: Update a purchase order  
+- `DELETE /purchase_order/{id}`: Delete a purchase order  
+
+
 ## Getting Started
 
-### Local Development
+### Running the Project with Docker
 
-1. Clone the repository:
+1. Start the application stack (API and PostgreSQL) using Docker Compose:
 
-    ```bash
-    git clone https://github.com/yourusername/s2p-api.git
-    cd s2p-api
-    ```
+```bash
+docker-compose up --build
+```
 
-2. Set up and activate a virtual environment:
+2. The API will be available at:
 
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
+- Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
+- ReDoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
-3. Install dependencies:
+3. To shut down the stack:
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+docker-compose down
+```
 
-4. Run the development server:
+### Database Migrations with Alembic
 
-    ```bash
-    uvicorn app.main:app --reload
-    ```
+Alembic is used to handle database schema migrations with PostgreSQL.
 
-5. Access the API documentation at:
+1. Create a new migration after editing your SQLAlchemy models:
 
-    - Swagger UI: http://localhost:8000/docs
-    - ReDoc: http://localhost:8000/redoc
+```bash
+docker-compose exec web alembic revision --autogenerate -m "Your message here"
+```
 
-### Running with Docker
+2. Apply the migration to the database:
 
-1. Build the image:
-
-    ```bash
-    docker build -f Dockerfile.dev -t s2p-api .
-    ```
-
-2. Run the container:
-
-    ```bash
-    docker run -p 8000:8000 s2p-api
-    ```
+```bash
+docker-compose exec web alembic upgrade head
+```
 
 ## Running Tests
 
-To run the test suite using pytest:
+To run the test suite using Docker (recommended):
 
 ```bash
-pytest
+docker-compose exec web pytest
 ```
 
 ## Future Improvements
 
 - Add authentication and authorization (OAuth2 or JWT)
-- Integrate PostgreSQL in a production Docker environment
+- Harden PostgreSQL setup for production (secure env vars, persistent volumes)
 - Extend schema to support invoices and approvals
-- Add pagination and filtering to list endpoints
-- CI/CD pipeline and deployment via Railway, Render, or Fly.io
+- Implement pagination and filtering for list endpoints
+- Improve error handling and standardized API responses
+- Set up CI/CD pipeline for automated testing and deployment
+- Add unit and integration tests with coverage reporting
+
