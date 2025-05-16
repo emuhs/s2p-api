@@ -1,8 +1,7 @@
 # Source-to-Pay (S2P) API
 
-This is a lightweight Source-to-Pay (S2P) backend built with FastAPI. 
-It supports CRUD operations for managing suppliers and their purchase orders. 
-The project is containerized using Docker and includes test coverage with pytest.
+Source-to-Pay (S2P) API is a secure, containerized backend for managing supplier relationships and purchase workflows. 
+Built with FastAPI and PostgreSQL, it supports full CRUD operations, schema migrations, and test coverage — making it ideal for internal finance or procurement teams needing a lightweight yet scalable foundation.
 
 ## Features
 
